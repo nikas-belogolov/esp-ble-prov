@@ -52,12 +52,6 @@ const status = await provisioner.sendCredentials({
     channel
 })
 
-if (status.staState == WifiStationState.Connected) {
-    // Connected successfully to wifi
-} else {
-    // Was not able to connect
-}
-
 // Reset provisiong state
 await provisioner.ctrlReset();
 
