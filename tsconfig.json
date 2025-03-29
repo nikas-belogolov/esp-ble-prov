@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/tmp", 
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "emitDeclarationOnly": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src/index.ts", "src/proto.d.ts"],
+  "exclude": ["build.js", "dist", "node_modules"]
+}
