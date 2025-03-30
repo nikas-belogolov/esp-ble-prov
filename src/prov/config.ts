@@ -15,7 +15,7 @@ const {
     RespApplyConfig
 } = config;
 
-export type ICmdSetConfig = config.ICmdSetConfig;
+export type ICmdSetConfig = config.ICmdSetConfig
 
 export function configGetStatusRequest() {
     let message = WiFiConfigPayload.create({

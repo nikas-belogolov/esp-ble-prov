@@ -6,11 +6,8 @@
 
 ## Features
 
-- Security0 and Security1 sessions
-- Automatic discovery of all BLE endpoints
-- Network Discovery
-- WiFi provisioning
-- ESP provisioning reset/reprov commands
+- WiFi provisioning supporting Security0 and Security1.
+- Automatic discovery of provisioning and custom endpoints.
 
 ## Installation
 
@@ -25,7 +22,7 @@ const textEncoder = new TextEncoder();
 const provisioner = new ESPProvisioner({
     deviceNamePrefix: "PROV_",
     serviceUUID: "YOUR_SERVICE_UUID",
-    security: new Security1({ pop: "test" })
+    security: new Security1({ pop: "test" }) // or new Security1() without PoP. Security0 is the default
 })
 
 // Scan for available devices and connect to one
@@ -45,11 +42,15 @@ let deviceId = await provisioner.readValueFromEndpoint("device-id")
 await provisioner.writeValueToEndpoint("device-id", textEncoder.encode("test"));
 
 // Connect to WiFi
-const status = await provisioner.sendCredentials({
+await provisioner.sendCredentials({
     ssid,
     passphrase: textEncoder.encode(passphrase),
     bssid,
     channel
+}).then(() => {
+    console.log("Successfully connected to WiFi!")
+}).catch(() => {
+    console.log("Failed to connect to WiFi")
 })
 
 // Reset provisiong state

@@ -1,5 +1,5 @@
 
-import { constants } from "./proto"
+import { constants, config, scan } from "./proto"
 
 import Security from "./security/security"
 import Security0 from "./security/security0"
@@ -9,18 +9,52 @@ import Security2 from "./security/security2"
 import type {
     ICmdScanResult,
     ICmdScanStart,
-    IWiFiScanResult
 } from "./prov/scan"
 
 import * as ctrl from "./prov/ctrl"
-import * as scan from "./prov/scan"
-import * as config from "./prov/config"
+// import * as scan from "./prov/scan"
 
-const { WifiStationState } = constants;
+import {
+    scanResultRequest,
+    scanResultResponse,
+    scanStartRequest,
+    scanStartResponse,
+    scanStatusRequest,
+    scanStatusResponse
+} from "./prov/scan"
 
-export { Security0, Security1, Security2, IWiFiScanResult, WifiStationState };
-export type IWifiStationState = constants.WifiStationState;
-export type IWifiConnectFailedReason = constants.WifiConnectFailedReason;
+import {
+    configApplyConfigRequest,
+    configApplyConfigResponse,
+    configGetStatusRequest,
+    configGetStatusResponse,
+    configSetConfigRequest,
+    configSetConfigResponse,
+    ICmdSetConfig
+} from "./prov/config"
+
+
+const { WifiStationState } = constants
+
+export { Security0, Security1, Security2, WifiStationState };
+
+export interface IWiFiScanResult {
+
+    /** WiFiScanResult ssid */
+    ssid?: (Uint8Array|null);
+
+    /** WiFiScanResult channel */
+    channel?: (number|null);
+
+    /** WiFiScanResult rssi */
+    rssi?: (number|null);
+
+    /** WiFiScanResult bssid */
+    bssid?: (Uint8Array|null);
+
+    /** WiFiScanResult auth */
+    auth?: (constants.WifiAuthMode|null);
+}
 
 export class ProvisionerError extends Error {
     constructor(message: string) {
@@ -274,13 +308,13 @@ export default class ESPProvisioner  {
         this.ensureConnected();
 
         try {
-            const message = scan.scanStartRequest(options)
+            const message = scanStartRequest(options)
             const encryptedMessage = this.security.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
             const response = this.security.decrypt(encryptedResponse);
-            scan.scanStartResponse(response);
+            scanStartResponse(response);
 
             console.log("Starting WiFi scan...");
 
@@ -299,13 +333,13 @@ export default class ESPProvisioner  {
         this.ensureConnected();
 
         try {
-            const message = scan.scanStatusRequest();
+            const message = scanStatusRequest();
             const encryptedMessage = this.security?.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
             const response = this.security?.decrypt(encryptedResponse);
-            return scan.scanStatusResponse(response); 
+            return scanStatusResponse(response); 
 
         } catch (error) {
             throw error instanceof Error
@@ -319,17 +353,17 @@ export default class ESPProvisioner  {
      * @param options Result options
      * @returns Array of Wi-Fi networks
      */
-    async getScanResults(options: scan.ICmdScanResult): Promise<IWiFiScanResult[]> {
+    async getScanResults(options: ICmdScanResult): Promise<IWiFiScanResult[]> {
         this.ensureConnected();
 
         try {
-            const message = scan.scanResultRequest(options)
+            const message = scanResultRequest(options)
             const encryptedMessage = this.security?.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
             const response = this.security?.decrypt(encryptedResponse);
-            return scan.scanResultResponse(response);
+            return scanResultResponse(response);
 
         } catch (error) {
             throw error instanceof Error
@@ -385,13 +419,13 @@ export default class ESPProvisioner  {
         try {
             console.log("Getting WiFi status.");
 
-            const message = config.configGetStatusRequest();
+            const message = configGetStatusRequest();
             const encryptedMessage = this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
             const response = this.security.decrypt(encryptedResponse);
-            return config.configGetStatusResponse(response);
+            return configGetStatusResponse(response);
 
         } catch (error) {
             throw error instanceof Error
@@ -405,20 +439,20 @@ export default class ESPProvisioner  {
      * @param options Wi-Fi configuration
      */
     async setWiFiConfig(
-        options: config.ICmdSetConfig
+        options: ICmdSetConfig
     ) {
         this.ensureConnected();
 
         try {
             console.log("Setting WiFi config.");
 
-            const message = config.configSetConfigRequest(options);
+            const message = configSetConfigRequest(options);
             const encryptedMessage = this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
             const response = this.security.decrypt(encryptedResponse);
-            config.configSetConfigResponse(response);
+            configSetConfigResponse(response);
         
         } catch (error) {
             throw error instanceof Error
@@ -436,13 +470,13 @@ export default class ESPProvisioner  {
         try {
             console.log("Applying WiFi config.");
 
-            const message = config.configApplyConfigRequest();
+            const message = configApplyConfigRequest();
             const encryptedMessage = this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
             const response = this.security.decrypt(encryptedResponse);
-            config.configApplyConfigResponse(response);
+            configApplyConfigResponse(response);
 
         } catch (error) {
             throw error instanceof Error
@@ -468,7 +502,7 @@ export default class ESPProvisioner  {
                 status = await this.getWiFiStatus();
 
                 if (status.staState === WifiStationState.Connected) {
-                    return status;
+                    break;
                 }
 
                 if (status.staState === WifiStationState.ConnectionFailed || 
@@ -503,7 +537,7 @@ export default class ESPProvisioner  {
      * @returns Wi-Fi status
      */
     async sendCredentials(
-        { ssid, passphrase, bssid, channel }: config.ICmdSetConfig,
+        { ssid, passphrase, bssid, channel }: ICmdSetConfig,
         timeout: number = 60_000
     ) {
         this.ensureConnected();
@@ -512,7 +546,7 @@ export default class ESPProvisioner  {
 
             await this.setWiFiConfig({ ssid, passphrase, bssid, channel });
             await this.applyWiFiConfig();
-            return await this.waitForWiFiStatus(timeout);
+            await this.waitForWiFiStatus(timeout);
 
         } catch (error) {
             throw error instanceof Error

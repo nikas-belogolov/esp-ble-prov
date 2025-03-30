@@ -1,6 +1,6 @@
 
 import { ProvisionerError } from "..";
-import { scan, constants } from "../proto"
+import { scan, constants } from "../proto.js"
 
 const { Status } = constants;
 
