@@ -1,6 +1,6 @@
 {
   "name": "esp-ble-prov",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ESP32 provisioning with WebBluetooth",
   "keywords": [
     "ESP32",
