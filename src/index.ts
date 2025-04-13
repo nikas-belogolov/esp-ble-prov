@@ -517,9 +517,11 @@ export default class ESPProvisioner  {
                 await sleep(1000);
 
             } while (this.isConnected)
-    
+
+	    if (!this.isConnected) {    
             throw new ProvisionerError("Device disconnected while waiting for WiFi status");
-        } catch (error) {
+	    }
+	} catch (error) {
             if (error instanceof ProvisionerError) {
                 throw error;
             }
