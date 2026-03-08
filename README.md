@@ -66,3 +66,7 @@ Feel free to contribute to the project.
 Currently not implemented features:
 
 - Security2 Session
+
+## In the Wild
+
+- [LAN Party Seating](https://github.com/otakulan/lanparty-seating) - Real-time web application for managing gaming station reservations at LAN party events.
