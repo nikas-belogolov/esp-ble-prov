@@ -281,6 +281,7 @@ export default class Security2 extends Security {
   private srp: Srp6a | null = null;
   private sessionKey: CryptoKey | null = null;
   private nonce: Uint8Array | null = null;
+  private staticNonce: boolean = false;
 
   constructor(options: Security2Options) {
     super();
@@ -373,6 +374,10 @@ export default class Security2 extends Security {
     }
 
     this.nonce = new Uint8Array(resp.deviceNonce!);
+
+    // ESP-IDF v5.x uses a static 16-byte IV.
+    // ESP-IDF v6.0+ uses a 12-byte IV with an incrementing counter.
+    this.staticNonce = this.nonce.length !== 12;
   }
 
   // -- Encrypt / Decrypt (AES-256-GCM) -------------------------------------
@@ -388,7 +393,7 @@ export default class Security2 extends Security {
       data
     );
 
-    this.incrementNonce();
+    if (!this.staticNonce) this.incrementNonce();
     return new Uint8Array(cipherBuf);
   }
 
@@ -403,7 +408,7 @@ export default class Security2 extends Security {
       data
     );
 
-    this.incrementNonce();
+    if (!this.staticNonce) this.incrementNonce();
     return new Uint8Array(plainBuf);
   }
 
