@@ -66,6 +66,7 @@ Feel free to contribute to the project.
 Currently not implemented features:
 
 - Security2 Session
+- Testing (Hardware-in-the-Loop, unit tests)
 
 ## In the Wild
 
