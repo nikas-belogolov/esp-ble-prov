@@ -37,6 +37,7 @@ import {
 const { WifiStationState } = constants
 
 export { Security0, Security1, Security2, WifiStationState };
+export type { Security2Options } from './security/security2';
 
 export interface IWiFiScanResult {
 
@@ -240,7 +241,7 @@ export default class ESPProvisioner  {
                 await this.writeValue("prov-session", sessionCmd1);
 
                 const sessionResp1 = await this.readValue("prov-session");
-                this.security.setup1Response(sessionResp1);
+                await this.security.setup1Response(sessionResp1);
             }
 
             console.log("Successfully established session.");
@@ -261,11 +262,11 @@ export default class ESPProvisioner  {
 
         try {
             const message = ctrl.ctrlResetRequest();
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-ctrl", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-ctrl");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             ctrl.ctrlResetResponse(response);
 
         } catch (error) {
@@ -284,11 +285,11 @@ export default class ESPProvisioner  {
         try {
 
             const message = ctrl.ctrlReprovRequest();
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-ctrl", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-ctrl");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             ctrl.ctrlReprovResponse(response);
             
         } catch (error) {
@@ -309,11 +310,11 @@ export default class ESPProvisioner  {
 
         try {
             const message = scanStartRequest(options)
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             scanStartResponse(response);
 
             console.log("Starting WiFi scan...");
@@ -334,11 +335,11 @@ export default class ESPProvisioner  {
 
         try {
             const message = scanStatusRequest();
-            const encryptedMessage = this.security?.encrypt(message);
+            const encryptedMessage = await this.security?.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
-            const response = this.security?.decrypt(encryptedResponse);
+            const response = await this.security?.decrypt(encryptedResponse);
             return scanStatusResponse(response); 
 
         } catch (error) {
@@ -358,11 +359,11 @@ export default class ESPProvisioner  {
 
         try {
             const message = scanResultRequest(options)
-            const encryptedMessage = this.security?.encrypt(message);
+            const encryptedMessage = await this.security?.encrypt(message);
             await this.writeValue("prov-scan", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-scan");
-            const response = this.security?.decrypt(encryptedResponse);
+            const response = await this.security?.decrypt(encryptedResponse);
             return scanResultResponse(response);
 
         } catch (error) {
@@ -420,11 +421,11 @@ export default class ESPProvisioner  {
             console.log("Getting WiFi status.");
 
             const message = configGetStatusRequest();
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             return configGetStatusResponse(response);
 
         } catch (error) {
@@ -447,11 +448,11 @@ export default class ESPProvisioner  {
             console.log("Setting WiFi config.");
 
             const message = configSetConfigRequest(options);
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             configSetConfigResponse(response);
         
         } catch (error) {
@@ -471,11 +472,11 @@ export default class ESPProvisioner  {
             console.log("Applying WiFi config.");
 
             const message = configApplyConfigRequest();
-            const encryptedMessage = this.security.encrypt(message);
+            const encryptedMessage = await this.security.encrypt(message);
             await this.writeValue("prov-config", encryptedMessage);
 
             const encryptedResponse = await this.readValue("prov-config");
-            const response = this.security.decrypt(encryptedResponse);
+            const response = await this.security.decrypt(encryptedResponse);
             configApplyConfigResponse(response);
 
         } catch (error) {
@@ -567,7 +568,7 @@ export default class ESPProvisioner  {
         this.ensureConnected();
 
         try {
-            value = this.security?.encrypt(value);
+            value = await this.security?.encrypt(value);
             await this.writeValue(ep_name, value);
         } catch (error) {
             throw error instanceof Error
@@ -586,7 +587,7 @@ export default class ESPProvisioner  {
 
         try {
             let value = await this.readValue(ep_name);
-            return this.security.decrypt(value);
+            return await this.security.decrypt(value);
         } catch (error) {
             throw error instanceof Error
                 ? new ProvisionerError(`Failed to write to endpoint ${ep_name}: ${error.message}`)
