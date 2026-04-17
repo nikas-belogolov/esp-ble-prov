@@ -19,11 +19,23 @@ $ npm install esp-ble-prov
 const textDecoder = new TextDecoder();
 const textEncoder = new TextEncoder();
 
+/* No security (No encryption). */
+const security0 = new Security0() 
+
+/* Curve25519-based key exchange, shared key derivation and AES256-CTR mode encryption of the data */
+// Authorized - Proof of Possession (PoP) string used to authorize session and derive shared key.
+const security1 = new Security1({ pop: 'test' }) 
+// Unauthorized - No Proof of Possession (PoP) string used to authorize session and derive shared key.
+const security1 = new Security1() 
+
+/* SRP6a-based shared key derivation and AES256-GCM mode encryption of the data. */
+const security2 = new Security2({ username: 'test', password: 'test' })
+
 const provisioner = new ESPProvisioner({
-    deviceNamePrefix: "PROV_",
-    serviceUUID: "YOUR_SERVICE_UUID",
-    security: new Security1({ pop: "test" }) // or new Security1() without PoP. Security0 is the default
-})
+  deviceNamePrefix: 'PROV_',
+  serviceUUID: 'YOUR_SERVICE_UUID',
+  security: security2, // recommended security scheme
+});
 
 // Scan for available devices and connect to one
 await provisioner.connect();
@@ -35,23 +47,27 @@ await provisioner.establishSession();
 const networks = await provisioner.scan();
 
 // Read value from custom endpoint
-let deviceId = await provisioner.readValueFromEndpoint("device-id")
-                                .then(value => textDecoder.decode(value));
+let deviceId = await provisioner
+  .readValueFromEndpoint('device-id')
+  .then((value) => textDecoder.decode(value));
 
 // Write value to custom endpoint
-await provisioner.writeValueToEndpoint("device-id", textEncoder.encode("test"));
+await provisioner.writeValueToEndpoint('device-id', textEncoder.encode('test'));
 
 // Connect to WiFi
-await provisioner.sendCredentials({
+await provisioner
+  .sendCredentials({
     ssid,
     passphrase: textEncoder.encode(passphrase),
     bssid,
-    channel
-}).then(() => {
-    console.log("Successfully connected to WiFi!")
-}).catch(() => {
-    console.log("Failed to connect to WiFi")
-})
+    channel,
+  })
+  .then(() => {
+    console.log('Successfully connected to WiFi!');
+  })
+  .catch(() => {
+    console.log('Failed to connect to WiFi');
+  });
 
 // Reset provisiong state
 await provisioner.ctrlReset();
@@ -65,7 +81,6 @@ await provisioner.ctrlReprov();
 Feel free to contribute to the project.
 Currently not implemented features:
 
-- Security2 Session
 - Testing (Hardware-in-the-Loop, unit tests)
 
 ## In the Wild

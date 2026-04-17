@@ -1,22 +1,20 @@
-/*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-"use strict";
-
-var $protobuf = require("protobufjs/minimal");
+/*eslint-disable no-prototype-builtins*/
+import * as $protobuf from "protobufjs/minimal";
 
 // Common aliases
-var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
+const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 // Exported root namespace
-var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
+const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-$root.constants = (function() {
+export const constants = $root.constants = (() => {
 
     /**
      * Namespace constants.
      * @exports constants
      * @namespace
      */
-    var constants = {};
+    const constants = {};
 
     /**
      * Status enum.
@@ -32,7 +30,7 @@ $root.constants = (function() {
      * @property {number} InvalidSession=7 InvalidSession value
      */
     constants.Status = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Success"] = 0;
         values[valuesById[1] = "InvalidSecScheme"] = 1;
         values[valuesById[2] = "InvalidProto"] = 2;
@@ -54,7 +52,7 @@ $root.constants = (function() {
      * @property {number} ConnectionFailed=3 ConnectionFailed value
      */
     constants.WifiStationState = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Connected"] = 0;
         values[valuesById[1] = "Connecting"] = 1;
         values[valuesById[2] = "Disconnected"] = 2;
@@ -70,7 +68,7 @@ $root.constants = (function() {
      * @property {number} NetworkNotFound=1 NetworkNotFound value
      */
     constants.WifiConnectFailedReason = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "AuthError"] = 0;
         values[valuesById[1] = "NetworkNotFound"] = 1;
         return values;
@@ -95,7 +93,7 @@ $root.constants = (function() {
          */
         function WifiAttemptFailed(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -161,12 +159,14 @@ $root.constants = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WifiAttemptFailed.decode = function decode(reader, length) {
+        WifiAttemptFailed.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.constants.WifiAttemptFailed();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.constants.WifiAttemptFailed();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.attemptsRemaining = reader.uint32();
@@ -224,7 +224,7 @@ $root.constants = (function() {
         WifiAttemptFailed.fromObject = function fromObject(object) {
             if (object instanceof $root.constants.WifiAttemptFailed)
                 return object;
-            var message = new $root.constants.WifiAttemptFailed();
+            let message = new $root.constants.WifiAttemptFailed();
             if (object.attemptsRemaining != null)
                 message.attemptsRemaining = object.attemptsRemaining >>> 0;
             return message;
@@ -242,7 +242,7 @@ $root.constants = (function() {
         WifiAttemptFailed.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.attemptsRemaining = 0;
             if (message.attemptsRemaining != null && message.hasOwnProperty("attemptsRemaining"))
@@ -293,7 +293,7 @@ $root.constants = (function() {
      * @property {number} WPA2_WPA3_PSK=7 WPA2_WPA3_PSK value
      */
     constants.WifiAuthMode = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Open"] = 0;
         values[valuesById[1] = "WEP"] = 1;
         values[valuesById[2] = "WPA_PSK"] = 2;
@@ -328,7 +328,7 @@ $root.constants = (function() {
          */
         function WifiConnectedState(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -434,12 +434,14 @@ $root.constants = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WifiConnectedState.decode = function decode(reader, length) {
+        WifiConnectedState.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.constants.WifiConnectedState();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.constants.WifiConnectedState();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.ip4Addr = reader.string();
@@ -536,7 +538,7 @@ $root.constants = (function() {
         WifiConnectedState.fromObject = function fromObject(object) {
             if (object instanceof $root.constants.WifiConnectedState)
                 return object;
-            var message = new $root.constants.WifiConnectedState();
+            let message = new $root.constants.WifiConnectedState();
             if (object.ip4Addr != null)
                 message.ip4Addr = String(object.ip4Addr);
             switch (object.authMode) {
@@ -606,7 +608,7 @@ $root.constants = (function() {
         WifiConnectedState.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.ip4Addr = "";
                 object.authMode = options.enums === String ? "Open" : 0;
@@ -671,14 +673,14 @@ $root.constants = (function() {
     return constants;
 })();
 
-$root.security0 = (function() {
+export const security0 = $root.security0 = (() => {
 
     /**
      * Namespace security0.
      * @exports security0
      * @namespace
      */
-    var security0 = {};
+    const security0 = {};
 
     security0.S0SessionCmd = (function() {
 
@@ -698,7 +700,7 @@ $root.security0 = (function() {
          */
         function S0SessionCmd(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -754,12 +756,14 @@ $root.security0 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S0SessionCmd.decode = function decode(reader, length) {
+        S0SessionCmd.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.S0SessionCmd();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.S0SessionCmd();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -874,7 +878,7 @@ $root.security0 = (function() {
          */
         function S0SessionResp(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -940,12 +944,14 @@ $root.security0 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S0SessionResp.decode = function decode(reader, length) {
+        S0SessionResp.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.S0SessionResp();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.S0SessionResp();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -1014,7 +1020,7 @@ $root.security0 = (function() {
         S0SessionResp.fromObject = function fromObject(object) {
             if (object instanceof $root.security0.S0SessionResp)
                 return object;
-            var message = new $root.security0.S0SessionResp();
+            let message = new $root.security0.S0SessionResp();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -1070,7 +1076,7 @@ $root.security0 = (function() {
         S0SessionResp.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.status = options.enums === String ? "Success" : 0;
             if (message.status != null && message.hasOwnProperty("status"))
@@ -1115,7 +1121,7 @@ $root.security0 = (function() {
      * @property {number} S0_Session_Response=1 S0_Session_Response value
      */
     security0.Sec0MsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "S0_Session_Command"] = 0;
         values[valuesById[1] = "S0_Session_Response"] = 1;
         return values;
@@ -1142,7 +1148,7 @@ $root.security0 = (function() {
          */
         function Sec0Payload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1172,7 +1178,7 @@ $root.security0 = (function() {
         Sec0Payload.prototype.sr = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * Sec0Payload payload.
@@ -1242,12 +1248,14 @@ $root.security0 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Sec0Payload.decode = function decode(reader, length) {
+        Sec0Payload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.Sec0Payload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security0.Sec0Payload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -1296,7 +1304,7 @@ $root.security0 = (function() {
         Sec0Payload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -1308,7 +1316,7 @@ $root.security0 = (function() {
             if (message.sc != null && message.hasOwnProperty("sc")) {
                 properties.payload = 1;
                 {
-                    var error = $root.security0.S0SessionCmd.verify(message.sc);
+                    let error = $root.security0.S0SessionCmd.verify(message.sc);
                     if (error)
                         return "sc." + error;
                 }
@@ -1318,7 +1326,7 @@ $root.security0 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security0.S0SessionResp.verify(message.sr);
+                    let error = $root.security0.S0SessionResp.verify(message.sr);
                     if (error)
                         return "sr." + error;
                 }
@@ -1337,7 +1345,7 @@ $root.security0 = (function() {
         Sec0Payload.fromObject = function fromObject(object) {
             if (object instanceof $root.security0.Sec0Payload)
                 return object;
-            var message = new $root.security0.Sec0Payload();
+            let message = new $root.security0.Sec0Payload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -1379,7 +1387,7 @@ $root.security0 = (function() {
         Sec0Payload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.msg = options.enums === String ? "S0_Session_Command" : 0;
             if (message.msg != null && message.hasOwnProperty("msg"))
@@ -1429,14 +1437,14 @@ $root.security0 = (function() {
     return security0;
 })();
 
-$root.security1 = (function() {
+export const security1 = $root.security1 = (() => {
 
     /**
      * Namespace security1.
      * @exports security1
      * @namespace
      */
-    var security1 = {};
+    const security1 = {};
 
     security1.SessionCmd1 = (function() {
 
@@ -1457,7 +1465,7 @@ $root.security1 = (function() {
          */
         function SessionCmd1(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1523,12 +1531,14 @@ $root.security1 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionCmd1.decode = function decode(reader, length) {
+        SessionCmd1.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionCmd1();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionCmd1();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 2: {
                         message.clientVerifyData = reader.bytes();
@@ -1586,7 +1596,7 @@ $root.security1 = (function() {
         SessionCmd1.fromObject = function fromObject(object) {
             if (object instanceof $root.security1.SessionCmd1)
                 return object;
-            var message = new $root.security1.SessionCmd1();
+            let message = new $root.security1.SessionCmd1();
             if (object.clientVerifyData != null)
                 if (typeof object.clientVerifyData === "string")
                     $util.base64.decode(object.clientVerifyData, message.clientVerifyData = $util.newBuffer($util.base64.length(object.clientVerifyData)), 0);
@@ -1607,7 +1617,7 @@ $root.security1 = (function() {
         SessionCmd1.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 if (options.bytes === String)
                     object.clientVerifyData = "";
@@ -1670,7 +1680,7 @@ $root.security1 = (function() {
          */
         function SessionResp1(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -1746,12 +1756,14 @@ $root.security1 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionResp1.decode = function decode(reader, length) {
+        SessionResp1.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionResp1();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionResp1();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -1827,7 +1839,7 @@ $root.security1 = (function() {
         SessionResp1.fromObject = function fromObject(object) {
             if (object instanceof $root.security1.SessionResp1)
                 return object;
-            var message = new $root.security1.SessionResp1();
+            let message = new $root.security1.SessionResp1();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -1888,7 +1900,7 @@ $root.security1 = (function() {
         SessionResp1.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.status = options.enums === String ? "Success" : 0;
                 if (options.bytes === String)
@@ -1954,7 +1966,7 @@ $root.security1 = (function() {
          */
         function SessionCmd0(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2020,12 +2032,14 @@ $root.security1 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionCmd0.decode = function decode(reader, length) {
+        SessionCmd0.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionCmd0();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionCmd0();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.clientPubkey = reader.bytes();
@@ -2083,7 +2097,7 @@ $root.security1 = (function() {
         SessionCmd0.fromObject = function fromObject(object) {
             if (object instanceof $root.security1.SessionCmd0)
                 return object;
-            var message = new $root.security1.SessionCmd0();
+            let message = new $root.security1.SessionCmd0();
             if (object.clientPubkey != null)
                 if (typeof object.clientPubkey === "string")
                     $util.base64.decode(object.clientPubkey, message.clientPubkey = $util.newBuffer($util.base64.length(object.clientPubkey)), 0);
@@ -2104,7 +2118,7 @@ $root.security1 = (function() {
         SessionCmd0.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 if (options.bytes === String)
                     object.clientPubkey = "";
@@ -2168,7 +2182,7 @@ $root.security1 = (function() {
          */
         function SessionResp0(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2254,12 +2268,14 @@ $root.security1 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionResp0.decode = function decode(reader, length) {
+        SessionResp0.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionResp0();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.SessionResp0();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -2342,7 +2358,7 @@ $root.security1 = (function() {
         SessionResp0.fromObject = function fromObject(object) {
             if (object instanceof $root.security1.SessionResp0)
                 return object;
-            var message = new $root.security1.SessionResp0();
+            let message = new $root.security1.SessionResp0();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -2408,7 +2424,7 @@ $root.security1 = (function() {
         SessionResp0.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.status = options.enums === String ? "Success" : 0;
                 if (options.bytes === String)
@@ -2474,7 +2490,7 @@ $root.security1 = (function() {
      * @property {number} Session_Response1=3 Session_Response1 value
      */
     security1.Sec1MsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Session_Command0"] = 0;
         values[valuesById[1] = "Session_Response0"] = 1;
         values[valuesById[2] = "Session_Command1"] = 2;
@@ -2505,7 +2521,7 @@ $root.security1 = (function() {
          */
         function Sec1Payload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2551,7 +2567,7 @@ $root.security1 = (function() {
         Sec1Payload.prototype.sr1 = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * Sec1Payload payload.
@@ -2625,12 +2641,14 @@ $root.security1 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Sec1Payload.decode = function decode(reader, length) {
+        Sec1Payload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.Sec1Payload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security1.Sec1Payload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -2687,7 +2705,7 @@ $root.security1 = (function() {
         Sec1Payload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -2701,7 +2719,7 @@ $root.security1 = (function() {
             if (message.sc0 != null && message.hasOwnProperty("sc0")) {
                 properties.payload = 1;
                 {
-                    var error = $root.security1.SessionCmd0.verify(message.sc0);
+                    let error = $root.security1.SessionCmd0.verify(message.sc0);
                     if (error)
                         return "sc0." + error;
                 }
@@ -2711,7 +2729,7 @@ $root.security1 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security1.SessionResp0.verify(message.sr0);
+                    let error = $root.security1.SessionResp0.verify(message.sr0);
                     if (error)
                         return "sr0." + error;
                 }
@@ -2721,7 +2739,7 @@ $root.security1 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security1.SessionCmd1.verify(message.sc1);
+                    let error = $root.security1.SessionCmd1.verify(message.sc1);
                     if (error)
                         return "sc1." + error;
                 }
@@ -2731,7 +2749,7 @@ $root.security1 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security1.SessionResp1.verify(message.sr1);
+                    let error = $root.security1.SessionResp1.verify(message.sr1);
                     if (error)
                         return "sr1." + error;
                 }
@@ -2750,7 +2768,7 @@ $root.security1 = (function() {
         Sec1Payload.fromObject = function fromObject(object) {
             if (object instanceof $root.security1.Sec1Payload)
                 return object;
-            var message = new $root.security1.Sec1Payload();
+            let message = new $root.security1.Sec1Payload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -2810,7 +2828,7 @@ $root.security1 = (function() {
         Sec1Payload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.msg = options.enums === String ? "Session_Command0" : 0;
             if (message.msg != null && message.hasOwnProperty("msg"))
@@ -2870,14 +2888,14 @@ $root.security1 = (function() {
     return security1;
 })();
 
-$root.security2 = (function() {
+export const security2 = $root.security2 = (() => {
 
     /**
      * Namespace security2.
      * @exports security2
      * @namespace
      */
-    var security2 = {};
+    const security2 = {};
 
     /**
      * Sec2MsgType enum.
@@ -2889,7 +2907,7 @@ $root.security2 = (function() {
      * @property {number} S2Session_Response1=3 S2Session_Response1 value
      */
     security2.Sec2MsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "S2Session_Command0"] = 0;
         values[valuesById[1] = "S2Session_Response0"] = 1;
         values[valuesById[2] = "S2Session_Command1"] = 2;
@@ -2917,7 +2935,7 @@ $root.security2 = (function() {
          */
         function S2SessionCmd0(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -2993,12 +3011,14 @@ $root.security2 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S2SessionCmd0.decode = function decode(reader, length) {
+        S2SessionCmd0.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionCmd0();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionCmd0();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.clientUsername = reader.bytes();
@@ -3063,7 +3083,7 @@ $root.security2 = (function() {
         S2SessionCmd0.fromObject = function fromObject(object) {
             if (object instanceof $root.security2.S2SessionCmd0)
                 return object;
-            var message = new $root.security2.S2SessionCmd0();
+            let message = new $root.security2.S2SessionCmd0();
             if (object.clientUsername != null)
                 if (typeof object.clientUsername === "string")
                     $util.base64.decode(object.clientUsername, message.clientUsername = $util.newBuffer($util.base64.length(object.clientUsername)), 0);
@@ -3089,7 +3109,7 @@ $root.security2 = (function() {
         S2SessionCmd0.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 if (options.bytes === String)
                     object.clientUsername = "";
@@ -3163,7 +3183,7 @@ $root.security2 = (function() {
          */
         function S2SessionResp0(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3249,12 +3269,14 @@ $root.security2 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S2SessionResp0.decode = function decode(reader, length) {
+        S2SessionResp0.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionResp0();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionResp0();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -3337,7 +3359,7 @@ $root.security2 = (function() {
         S2SessionResp0.fromObject = function fromObject(object) {
             if (object instanceof $root.security2.S2SessionResp0)
                 return object;
-            var message = new $root.security2.S2SessionResp0();
+            let message = new $root.security2.S2SessionResp0();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -3403,7 +3425,7 @@ $root.security2 = (function() {
         S2SessionResp0.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.status = options.enums === String ? "Success" : 0;
                 if (options.bytes === String)
@@ -3478,7 +3500,7 @@ $root.security2 = (function() {
          */
         function S2SessionCmd1(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3544,12 +3566,14 @@ $root.security2 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S2SessionCmd1.decode = function decode(reader, length) {
+        S2SessionCmd1.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionCmd1();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionCmd1();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.clientProof = reader.bytes();
@@ -3607,7 +3631,7 @@ $root.security2 = (function() {
         S2SessionCmd1.fromObject = function fromObject(object) {
             if (object instanceof $root.security2.S2SessionCmd1)
                 return object;
-            var message = new $root.security2.S2SessionCmd1();
+            let message = new $root.security2.S2SessionCmd1();
             if (object.clientProof != null)
                 if (typeof object.clientProof === "string")
                     $util.base64.decode(object.clientProof, message.clientProof = $util.newBuffer($util.base64.length(object.clientProof)), 0);
@@ -3628,7 +3652,7 @@ $root.security2 = (function() {
         S2SessionCmd1.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 if (options.bytes === String)
                     object.clientProof = "";
@@ -3692,7 +3716,7 @@ $root.security2 = (function() {
          */
         function S2SessionResp1(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -3778,12 +3802,14 @@ $root.security2 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        S2SessionResp1.decode = function decode(reader, length) {
+        S2SessionResp1.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionResp1();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.S2SessionResp1();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -3866,7 +3892,7 @@ $root.security2 = (function() {
         S2SessionResp1.fromObject = function fromObject(object) {
             if (object instanceof $root.security2.S2SessionResp1)
                 return object;
-            var message = new $root.security2.S2SessionResp1();
+            let message = new $root.security2.S2SessionResp1();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -3932,7 +3958,7 @@ $root.security2 = (function() {
         S2SessionResp1.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.status = options.enums === String ? "Success" : 0;
                 if (options.bytes === String)
@@ -4011,7 +4037,7 @@ $root.security2 = (function() {
          */
         function Sec2Payload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4057,7 +4083,7 @@ $root.security2 = (function() {
         Sec2Payload.prototype.sr1 = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * Sec2Payload payload.
@@ -4131,12 +4157,14 @@ $root.security2 = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        Sec2Payload.decode = function decode(reader, length) {
+        Sec2Payload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.Sec2Payload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.security2.Sec2Payload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -4193,7 +4221,7 @@ $root.security2 = (function() {
         Sec2Payload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -4207,7 +4235,7 @@ $root.security2 = (function() {
             if (message.sc0 != null && message.hasOwnProperty("sc0")) {
                 properties.payload = 1;
                 {
-                    var error = $root.security2.S2SessionCmd0.verify(message.sc0);
+                    let error = $root.security2.S2SessionCmd0.verify(message.sc0);
                     if (error)
                         return "sc0." + error;
                 }
@@ -4217,7 +4245,7 @@ $root.security2 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security2.S2SessionResp0.verify(message.sr0);
+                    let error = $root.security2.S2SessionResp0.verify(message.sr0);
                     if (error)
                         return "sr0." + error;
                 }
@@ -4227,7 +4255,7 @@ $root.security2 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security2.S2SessionCmd1.verify(message.sc1);
+                    let error = $root.security2.S2SessionCmd1.verify(message.sc1);
                     if (error)
                         return "sc1." + error;
                 }
@@ -4237,7 +4265,7 @@ $root.security2 = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.security2.S2SessionResp1.verify(message.sr1);
+                    let error = $root.security2.S2SessionResp1.verify(message.sr1);
                     if (error)
                         return "sr1." + error;
                 }
@@ -4256,7 +4284,7 @@ $root.security2 = (function() {
         Sec2Payload.fromObject = function fromObject(object) {
             if (object instanceof $root.security2.Sec2Payload)
                 return object;
-            var message = new $root.security2.Sec2Payload();
+            let message = new $root.security2.Sec2Payload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -4316,7 +4344,7 @@ $root.security2 = (function() {
         Sec2Payload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.msg = options.enums === String ? "S2Session_Command0" : 0;
             if (message.msg != null && message.hasOwnProperty("msg"))
@@ -4376,14 +4404,14 @@ $root.security2 = (function() {
     return security2;
 })();
 
-$root.session = (function() {
+export const session = $root.session = (() => {
 
     /**
      * Namespace session.
      * @exports session
      * @namespace
      */
-    var session = {};
+    const session = {};
 
     /**
      * SecSchemeVersion enum.
@@ -4394,7 +4422,7 @@ $root.session = (function() {
      * @property {number} SecScheme2=2 SecScheme2 value
      */
     session.SecSchemeVersion = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "SecScheme0"] = 0;
         values[valuesById[1] = "SecScheme1"] = 1;
         values[valuesById[2] = "SecScheme2"] = 2;
@@ -4423,7 +4451,7 @@ $root.session = (function() {
          */
         function SessionData(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4461,7 +4489,7 @@ $root.session = (function() {
         SessionData.prototype.sec2 = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * SessionData proto.
@@ -4533,12 +4561,14 @@ $root.session = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        SessionData.decode = function decode(reader, length) {
+        SessionData.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.session.SessionData();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.session.SessionData();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 2: {
                         message.secVer = reader.int32();
@@ -4591,7 +4621,7 @@ $root.session = (function() {
         SessionData.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.secVer != null && message.hasOwnProperty("secVer"))
                 switch (message.secVer) {
                 default:
@@ -4604,7 +4634,7 @@ $root.session = (function() {
             if (message.sec0 != null && message.hasOwnProperty("sec0")) {
                 properties.proto = 1;
                 {
-                    var error = $root.security0.Sec0Payload.verify(message.sec0);
+                    let error = $root.security0.Sec0Payload.verify(message.sec0);
                     if (error)
                         return "sec0." + error;
                 }
@@ -4614,7 +4644,7 @@ $root.session = (function() {
                     return "proto: multiple values";
                 properties.proto = 1;
                 {
-                    var error = $root.security1.Sec1Payload.verify(message.sec1);
+                    let error = $root.security1.Sec1Payload.verify(message.sec1);
                     if (error)
                         return "sec1." + error;
                 }
@@ -4624,7 +4654,7 @@ $root.session = (function() {
                     return "proto: multiple values";
                 properties.proto = 1;
                 {
-                    var error = $root.security2.Sec2Payload.verify(message.sec2);
+                    let error = $root.security2.Sec2Payload.verify(message.sec2);
                     if (error)
                         return "sec2." + error;
                 }
@@ -4643,7 +4673,7 @@ $root.session = (function() {
         SessionData.fromObject = function fromObject(object) {
             if (object instanceof $root.session.SessionData)
                 return object;
-            var message = new $root.session.SessionData();
+            let message = new $root.session.SessionData();
             switch (object.secVer) {
             default:
                 if (typeof object.secVer === "number") {
@@ -4694,7 +4724,7 @@ $root.session = (function() {
         SessionData.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.secVer = options.enums === String ? "SecScheme0" : 0;
             if (message.secVer != null && message.hasOwnProperty("secVer"))
@@ -4749,14 +4779,14 @@ $root.session = (function() {
     return session;
 })();
 
-$root.config = (function() {
+export const config = $root.config = (() => {
 
     /**
      * Namespace config.
      * @exports config
      * @namespace
      */
-    var config = {};
+    const config = {};
 
     config.CmdGetStatus = (function() {
 
@@ -4776,7 +4806,7 @@ $root.config = (function() {
          */
         function CmdGetStatus(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -4832,12 +4862,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdGetStatus.decode = function decode(reader, length) {
+        CmdGetStatus.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdGetStatus();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdGetStatus();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -4956,7 +4988,7 @@ $root.config = (function() {
          */
         function RespGetStatus(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5002,7 +5034,7 @@ $root.config = (function() {
         RespGetStatus.prototype.attemptFailed = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * RespGetStatus state.
@@ -5076,12 +5108,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespGetStatus.decode = function decode(reader, length) {
+        RespGetStatus.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespGetStatus();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespGetStatus();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -5138,7 +5172,7 @@ $root.config = (function() {
         RespGetStatus.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.status != null && message.hasOwnProperty("status"))
                 switch (message.status) {
                 default:
@@ -5178,7 +5212,7 @@ $root.config = (function() {
                     return "state: multiple values";
                 properties.state = 1;
                 {
-                    var error = $root.constants.WifiConnectedState.verify(message.connected);
+                    let error = $root.constants.WifiConnectedState.verify(message.connected);
                     if (error)
                         return "connected." + error;
                 }
@@ -5188,7 +5222,7 @@ $root.config = (function() {
                     return "state: multiple values";
                 properties.state = 1;
                 {
-                    var error = $root.constants.WifiAttemptFailed.verify(message.attemptFailed);
+                    let error = $root.constants.WifiAttemptFailed.verify(message.attemptFailed);
                     if (error)
                         return "attemptFailed." + error;
                 }
@@ -5207,7 +5241,7 @@ $root.config = (function() {
         RespGetStatus.fromObject = function fromObject(object) {
             if (object instanceof $root.config.RespGetStatus)
                 return object;
-            var message = new $root.config.RespGetStatus();
+            let message = new $root.config.RespGetStatus();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -5313,7 +5347,7 @@ $root.config = (function() {
         RespGetStatus.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.status = options.enums === String ? "Success" : 0;
                 object.staState = options.enums === String ? "Connected" : 0;
@@ -5391,7 +5425,7 @@ $root.config = (function() {
          */
         function CmdSetConfig(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5487,12 +5521,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdSetConfig.decode = function decode(reader, length) {
+        CmdSetConfig.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdSetConfig();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdSetConfig();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.ssid = reader.bytes();
@@ -5571,7 +5607,7 @@ $root.config = (function() {
         CmdSetConfig.fromObject = function fromObject(object) {
             if (object instanceof $root.config.CmdSetConfig)
                 return object;
-            var message = new $root.config.CmdSetConfig();
+            let message = new $root.config.CmdSetConfig();
             if (object.ssid != null)
                 if (typeof object.ssid === "string")
                     $util.base64.decode(object.ssid, message.ssid = $util.newBuffer($util.base64.length(object.ssid)), 0);
@@ -5604,7 +5640,7 @@ $root.config = (function() {
         CmdSetConfig.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 if (options.bytes === String)
                     object.ssid = "";
@@ -5688,7 +5724,7 @@ $root.config = (function() {
          */
         function RespSetConfig(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5754,12 +5790,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespSetConfig.decode = function decode(reader, length) {
+        RespSetConfig.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespSetConfig();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespSetConfig();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -5828,7 +5866,7 @@ $root.config = (function() {
         RespSetConfig.fromObject = function fromObject(object) {
             if (object instanceof $root.config.RespSetConfig)
                 return object;
-            var message = new $root.config.RespSetConfig();
+            let message = new $root.config.RespSetConfig();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -5884,7 +5922,7 @@ $root.config = (function() {
         RespSetConfig.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.status = options.enums === String ? "Success" : 0;
             if (message.status != null && message.hasOwnProperty("status"))
@@ -5939,7 +5977,7 @@ $root.config = (function() {
          */
         function CmdApplyConfig(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -5995,12 +6033,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdApplyConfig.decode = function decode(reader, length) {
+        CmdApplyConfig.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdApplyConfig();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.CmdApplyConfig();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -6115,7 +6155,7 @@ $root.config = (function() {
          */
         function RespApplyConfig(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6181,12 +6221,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespApplyConfig.decode = function decode(reader, length) {
+        RespApplyConfig.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespApplyConfig();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.RespApplyConfig();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.status = reader.int32();
@@ -6255,7 +6297,7 @@ $root.config = (function() {
         RespApplyConfig.fromObject = function fromObject(object) {
             if (object instanceof $root.config.RespApplyConfig)
                 return object;
-            var message = new $root.config.RespApplyConfig();
+            let message = new $root.config.RespApplyConfig();
             switch (object.status) {
             default:
                 if (typeof object.status === "number") {
@@ -6311,7 +6353,7 @@ $root.config = (function() {
         RespApplyConfig.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.status = options.enums === String ? "Success" : 0;
             if (message.status != null && message.hasOwnProperty("status"))
@@ -6360,7 +6402,7 @@ $root.config = (function() {
      * @property {number} TypeRespApplyConfig=5 TypeRespApplyConfig value
      */
     config.WiFiConfigMsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "TypeCmdGetStatus"] = 0;
         values[valuesById[1] = "TypeRespGetStatus"] = 1;
         values[valuesById[2] = "TypeCmdSetConfig"] = 2;
@@ -6395,7 +6437,7 @@ $root.config = (function() {
          */
         function WiFiConfigPayload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6457,7 +6499,7 @@ $root.config = (function() {
         WiFiConfigPayload.prototype.respApplyConfig = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * WiFiConfigPayload payload.
@@ -6535,12 +6577,14 @@ $root.config = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WiFiConfigPayload.decode = function decode(reader, length) {
+        WiFiConfigPayload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.WiFiConfigPayload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.config.WiFiConfigPayload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -6605,7 +6649,7 @@ $root.config = (function() {
         WiFiConfigPayload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -6621,7 +6665,7 @@ $root.config = (function() {
             if (message.cmdGetStatus != null && message.hasOwnProperty("cmdGetStatus")) {
                 properties.payload = 1;
                 {
-                    var error = $root.config.CmdGetStatus.verify(message.cmdGetStatus);
+                    let error = $root.config.CmdGetStatus.verify(message.cmdGetStatus);
                     if (error)
                         return "cmdGetStatus." + error;
                 }
@@ -6631,7 +6675,7 @@ $root.config = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.config.RespGetStatus.verify(message.respGetStatus);
+                    let error = $root.config.RespGetStatus.verify(message.respGetStatus);
                     if (error)
                         return "respGetStatus." + error;
                 }
@@ -6641,7 +6685,7 @@ $root.config = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.config.CmdSetConfig.verify(message.cmdSetConfig);
+                    let error = $root.config.CmdSetConfig.verify(message.cmdSetConfig);
                     if (error)
                         return "cmdSetConfig." + error;
                 }
@@ -6651,7 +6695,7 @@ $root.config = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.config.RespSetConfig.verify(message.respSetConfig);
+                    let error = $root.config.RespSetConfig.verify(message.respSetConfig);
                     if (error)
                         return "respSetConfig." + error;
                 }
@@ -6661,7 +6705,7 @@ $root.config = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.config.CmdApplyConfig.verify(message.cmdApplyConfig);
+                    let error = $root.config.CmdApplyConfig.verify(message.cmdApplyConfig);
                     if (error)
                         return "cmdApplyConfig." + error;
                 }
@@ -6671,7 +6715,7 @@ $root.config = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.config.RespApplyConfig.verify(message.respApplyConfig);
+                    let error = $root.config.RespApplyConfig.verify(message.respApplyConfig);
                     if (error)
                         return "respApplyConfig." + error;
                 }
@@ -6690,7 +6734,7 @@ $root.config = (function() {
         WiFiConfigPayload.fromObject = function fromObject(object) {
             if (object instanceof $root.config.WiFiConfigPayload)
                 return object;
-            var message = new $root.config.WiFiConfigPayload();
+            let message = new $root.config.WiFiConfigPayload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -6768,7 +6812,7 @@ $root.config = (function() {
         WiFiConfigPayload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults)
                 object.msg = options.enums === String ? "TypeCmdGetStatus" : 0;
             if (message.msg != null && message.hasOwnProperty("msg"))
@@ -6838,14 +6882,14 @@ $root.config = (function() {
     return config;
 })();
 
-$root.ctrl = (function() {
+export const ctrl = $root.ctrl = (() => {
 
     /**
      * Namespace ctrl.
      * @exports ctrl
      * @namespace
      */
-    var ctrl = {};
+    const ctrl = {};
 
     ctrl.CmdCtrlReset = (function() {
 
@@ -6865,7 +6909,7 @@ $root.ctrl = (function() {
          */
         function CmdCtrlReset(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -6921,12 +6965,14 @@ $root.ctrl = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdCtrlReset.decode = function decode(reader, length) {
+        CmdCtrlReset.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.CmdCtrlReset();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.CmdCtrlReset();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -7040,7 +7086,7 @@ $root.ctrl = (function() {
          */
         function RespCtrlReset(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -7096,12 +7142,14 @@ $root.ctrl = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespCtrlReset.decode = function decode(reader, length) {
+        RespCtrlReset.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.RespCtrlReset();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.RespCtrlReset();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -7215,7 +7263,7 @@ $root.ctrl = (function() {
          */
         function CmdCtrlReprov(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -7271,12 +7319,14 @@ $root.ctrl = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdCtrlReprov.decode = function decode(reader, length) {
+        CmdCtrlReprov.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.CmdCtrlReprov();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.CmdCtrlReprov();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -7390,7 +7440,7 @@ $root.ctrl = (function() {
          */
         function RespCtrlReprov(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -7446,12 +7496,14 @@ $root.ctrl = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespCtrlReprov.decode = function decode(reader, length) {
+        RespCtrlReprov.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.RespCtrlReprov();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.RespCtrlReprov();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -7558,7 +7610,7 @@ $root.ctrl = (function() {
      * @property {number} TypeRespCtrlReprov=4 TypeRespCtrlReprov value
      */
     ctrl.WiFiCtrlMsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "TypeCtrlReserved"] = 0;
         values[valuesById[1] = "TypeCmdCtrlReset"] = 1;
         values[valuesById[2] = "TypeRespCtrlReset"] = 2;
@@ -7591,7 +7643,7 @@ $root.ctrl = (function() {
          */
         function WiFiCtrlPayload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -7645,7 +7697,7 @@ $root.ctrl = (function() {
         WiFiCtrlPayload.prototype.respCtrlReprov = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * WiFiCtrlPayload payload.
@@ -7721,12 +7773,14 @@ $root.ctrl = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WiFiCtrlPayload.decode = function decode(reader, length) {
+        WiFiCtrlPayload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.WiFiCtrlPayload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.ctrl.WiFiCtrlPayload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -7787,7 +7841,7 @@ $root.ctrl = (function() {
         WiFiCtrlPayload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -7816,7 +7870,7 @@ $root.ctrl = (function() {
             if (message.cmdCtrlReset != null && message.hasOwnProperty("cmdCtrlReset")) {
                 properties.payload = 1;
                 {
-                    var error = $root.ctrl.CmdCtrlReset.verify(message.cmdCtrlReset);
+                    let error = $root.ctrl.CmdCtrlReset.verify(message.cmdCtrlReset);
                     if (error)
                         return "cmdCtrlReset." + error;
                 }
@@ -7826,7 +7880,7 @@ $root.ctrl = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.ctrl.RespCtrlReset.verify(message.respCtrlReset);
+                    let error = $root.ctrl.RespCtrlReset.verify(message.respCtrlReset);
                     if (error)
                         return "respCtrlReset." + error;
                 }
@@ -7836,7 +7890,7 @@ $root.ctrl = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.ctrl.CmdCtrlReprov.verify(message.cmdCtrlReprov);
+                    let error = $root.ctrl.CmdCtrlReprov.verify(message.cmdCtrlReprov);
                     if (error)
                         return "cmdCtrlReprov." + error;
                 }
@@ -7846,7 +7900,7 @@ $root.ctrl = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.ctrl.RespCtrlReprov.verify(message.respCtrlReprov);
+                    let error = $root.ctrl.RespCtrlReprov.verify(message.respCtrlReprov);
                     if (error)
                         return "respCtrlReprov." + error;
                 }
@@ -7865,7 +7919,7 @@ $root.ctrl = (function() {
         WiFiCtrlPayload.fromObject = function fromObject(object) {
             if (object instanceof $root.ctrl.WiFiCtrlPayload)
                 return object;
-            var message = new $root.ctrl.WiFiCtrlPayload();
+            let message = new $root.ctrl.WiFiCtrlPayload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -7969,7 +8023,7 @@ $root.ctrl = (function() {
         WiFiCtrlPayload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.msg = options.enums === String ? "TypeCtrlReserved" : 0;
                 object.status = options.enums === String ? "Success" : 0;
@@ -8033,14 +8087,14 @@ $root.ctrl = (function() {
     return ctrl;
 })();
 
-$root.scan = (function() {
+export const scan = $root.scan = (() => {
 
     /**
      * Namespace scan.
      * @exports scan
      * @namespace
      */
-    var scan = {};
+    const scan = {};
 
     scan.CmdScanStart = (function() {
 
@@ -8064,7 +8118,7 @@ $root.scan = (function() {
          */
         function CmdScanStart(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -8160,12 +8214,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdScanStart.decode = function decode(reader, length) {
+        CmdScanStart.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanStart();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanStart();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.blocking = reader.bool();
@@ -8244,7 +8300,7 @@ $root.scan = (function() {
         CmdScanStart.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.CmdScanStart)
                 return object;
-            var message = new $root.scan.CmdScanStart();
+            let message = new $root.scan.CmdScanStart();
             if (object.blocking != null)
                 message.blocking = Boolean(object.blocking);
             if (object.passive != null)
@@ -8268,7 +8324,7 @@ $root.scan = (function() {
         CmdScanStart.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.blocking = false;
                 object.passive = false;
@@ -8333,7 +8389,7 @@ $root.scan = (function() {
          */
         function RespScanStart(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -8389,12 +8445,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespScanStart.decode = function decode(reader, length) {
+        RespScanStart.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanStart();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanStart();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -8508,7 +8566,7 @@ $root.scan = (function() {
          */
         function CmdScanStatus(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -8564,12 +8622,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdScanStatus.decode = function decode(reader, length) {
+        CmdScanStatus.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanStatus();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanStatus();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 default:
                     reader.skipType(tag & 7);
@@ -8685,7 +8745,7 @@ $root.scan = (function() {
          */
         function RespScanStatus(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -8761,12 +8821,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespScanStatus.decode = function decode(reader, length) {
+        RespScanStatus.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanStatus();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanStatus();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.scanFinished = reader.bool();
@@ -8831,7 +8893,7 @@ $root.scan = (function() {
         RespScanStatus.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.RespScanStatus)
                 return object;
-            var message = new $root.scan.RespScanStatus();
+            let message = new $root.scan.RespScanStatus();
             if (object.scanFinished != null)
                 message.scanFinished = Boolean(object.scanFinished);
             if (object.resultCount != null)
@@ -8851,7 +8913,7 @@ $root.scan = (function() {
         RespScanStatus.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.scanFinished = false;
                 object.resultCount = 0;
@@ -8912,7 +8974,7 @@ $root.scan = (function() {
          */
         function CmdScanResult(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -8988,12 +9050,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        CmdScanResult.decode = function decode(reader, length) {
+        CmdScanResult.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanResult();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.CmdScanResult();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.startIndex = reader.uint32();
@@ -9058,7 +9122,7 @@ $root.scan = (function() {
         CmdScanResult.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.CmdScanResult)
                 return object;
-            var message = new $root.scan.CmdScanResult();
+            let message = new $root.scan.CmdScanResult();
             if (object.startIndex != null)
                 message.startIndex = object.startIndex >>> 0;
             if (object.count != null)
@@ -9078,7 +9142,7 @@ $root.scan = (function() {
         CmdScanResult.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.startIndex = 0;
                 object.count = 0;
@@ -9142,7 +9206,7 @@ $root.scan = (function() {
          */
         function WiFiScanResult(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -9248,12 +9312,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WiFiScanResult.decode = function decode(reader, length) {
+        WiFiScanResult.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.WiFiScanResult();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.WiFiScanResult();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.ssid = reader.bytes();
@@ -9350,7 +9416,7 @@ $root.scan = (function() {
         WiFiScanResult.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.WiFiScanResult)
                 return object;
-            var message = new $root.scan.WiFiScanResult();
+            let message = new $root.scan.WiFiScanResult();
             if (object.ssid != null)
                 if (typeof object.ssid === "string")
                     $util.base64.decode(object.ssid, message.ssid = $util.newBuffer($util.base64.length(object.ssid)), 0);
@@ -9420,7 +9486,7 @@ $root.scan = (function() {
         WiFiScanResult.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 if (options.bytes === String)
                     object.ssid = "";
@@ -9502,7 +9568,7 @@ $root.scan = (function() {
         function RespScanResult(properties) {
             this.entries = [];
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -9540,7 +9606,7 @@ $root.scan = (function() {
             if (!writer)
                 writer = $Writer.create();
             if (message.entries != null && message.entries.length)
-                for (var i = 0; i < message.entries.length; ++i)
+                for (let i = 0; i < message.entries.length; ++i)
                     $root.scan.WiFiScanResult.encode(message.entries[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
@@ -9569,12 +9635,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        RespScanResult.decode = function decode(reader, length) {
+        RespScanResult.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanResult();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.RespScanResult();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         if (!(message.entries && message.entries.length))
@@ -9620,8 +9688,8 @@ $root.scan = (function() {
             if (message.entries != null && message.hasOwnProperty("entries")) {
                 if (!Array.isArray(message.entries))
                     return "entries: array expected";
-                for (var i = 0; i < message.entries.length; ++i) {
-                    var error = $root.scan.WiFiScanResult.verify(message.entries[i]);
+                for (let i = 0; i < message.entries.length; ++i) {
+                    let error = $root.scan.WiFiScanResult.verify(message.entries[i]);
                     if (error)
                         return "entries." + error;
                 }
@@ -9640,12 +9708,12 @@ $root.scan = (function() {
         RespScanResult.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.RespScanResult)
                 return object;
-            var message = new $root.scan.RespScanResult();
+            let message = new $root.scan.RespScanResult();
             if (object.entries) {
                 if (!Array.isArray(object.entries))
                     throw TypeError(".scan.RespScanResult.entries: array expected");
                 message.entries = [];
-                for (var i = 0; i < object.entries.length; ++i) {
+                for (let i = 0; i < object.entries.length; ++i) {
                     if (typeof object.entries[i] !== "object")
                         throw TypeError(".scan.RespScanResult.entries: object expected");
                     message.entries[i] = $root.scan.WiFiScanResult.fromObject(object.entries[i]);
@@ -9666,12 +9734,12 @@ $root.scan = (function() {
         RespScanResult.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.arrays || options.defaults)
                 object.entries = [];
             if (message.entries && message.entries.length) {
                 object.entries = [];
-                for (var j = 0; j < message.entries.length; ++j)
+                for (let j = 0; j < message.entries.length; ++j)
                     object.entries[j] = $root.scan.WiFiScanResult.toObject(message.entries[j], options);
             }
             return object;
@@ -9718,7 +9786,7 @@ $root.scan = (function() {
      * @property {number} TypeRespScanResult=5 TypeRespScanResult value
      */
     scan.WiFiScanMsgType = (function() {
-        var valuesById = {}, values = Object.create(valuesById);
+        const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "TypeCmdScanStart"] = 0;
         values[valuesById[1] = "TypeRespScanStart"] = 1;
         values[valuesById[2] = "TypeCmdScanStatus"] = 2;
@@ -9754,7 +9822,7 @@ $root.scan = (function() {
          */
         function WiFiScanPayload(properties) {
             if (properties)
-                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
@@ -9824,7 +9892,7 @@ $root.scan = (function() {
         WiFiScanPayload.prototype.respScanResult = null;
 
         // OneOf field names bound to virtual getters and setters
-        var $oneOfFields;
+        let $oneOfFields;
 
         /**
          * WiFiScanPayload payload.
@@ -9904,12 +9972,14 @@ $root.scan = (function() {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        WiFiScanPayload.decode = function decode(reader, length) {
+        WiFiScanPayload.decode = function decode(reader, length, error) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.WiFiScanPayload();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.scan.WiFiScanPayload();
             while (reader.pos < end) {
-                var tag = reader.uint32();
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
                 switch (tag >>> 3) {
                 case 1: {
                         message.msg = reader.int32();
@@ -9978,7 +10048,7 @@ $root.scan = (function() {
         WiFiScanPayload.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            var properties = {};
+            let properties = {};
             if (message.msg != null && message.hasOwnProperty("msg"))
                 switch (message.msg) {
                 default:
@@ -10008,7 +10078,7 @@ $root.scan = (function() {
             if (message.cmdScanStart != null && message.hasOwnProperty("cmdScanStart")) {
                 properties.payload = 1;
                 {
-                    var error = $root.scan.CmdScanStart.verify(message.cmdScanStart);
+                    let error = $root.scan.CmdScanStart.verify(message.cmdScanStart);
                     if (error)
                         return "cmdScanStart." + error;
                 }
@@ -10018,7 +10088,7 @@ $root.scan = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.scan.RespScanStart.verify(message.respScanStart);
+                    let error = $root.scan.RespScanStart.verify(message.respScanStart);
                     if (error)
                         return "respScanStart." + error;
                 }
@@ -10028,7 +10098,7 @@ $root.scan = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.scan.CmdScanStatus.verify(message.cmdScanStatus);
+                    let error = $root.scan.CmdScanStatus.verify(message.cmdScanStatus);
                     if (error)
                         return "cmdScanStatus." + error;
                 }
@@ -10038,7 +10108,7 @@ $root.scan = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.scan.RespScanStatus.verify(message.respScanStatus);
+                    let error = $root.scan.RespScanStatus.verify(message.respScanStatus);
                     if (error)
                         return "respScanStatus." + error;
                 }
@@ -10048,7 +10118,7 @@ $root.scan = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.scan.CmdScanResult.verify(message.cmdScanResult);
+                    let error = $root.scan.CmdScanResult.verify(message.cmdScanResult);
                     if (error)
                         return "cmdScanResult." + error;
                 }
@@ -10058,7 +10128,7 @@ $root.scan = (function() {
                     return "payload: multiple values";
                 properties.payload = 1;
                 {
-                    var error = $root.scan.RespScanResult.verify(message.respScanResult);
+                    let error = $root.scan.RespScanResult.verify(message.respScanResult);
                     if (error)
                         return "respScanResult." + error;
                 }
@@ -10077,7 +10147,7 @@ $root.scan = (function() {
         WiFiScanPayload.fromObject = function fromObject(object) {
             if (object instanceof $root.scan.WiFiScanPayload)
                 return object;
-            var message = new $root.scan.WiFiScanPayload();
+            let message = new $root.scan.WiFiScanPayload();
             switch (object.msg) {
             default:
                 if (typeof object.msg === "number") {
@@ -10195,7 +10265,7 @@ $root.scan = (function() {
         WiFiScanPayload.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
-            var object = {};
+            let object = {};
             if (options.defaults) {
                 object.msg = options.enums === String ? "TypeCmdScanStart" : 0;
                 object.status = options.enums === String ? "Success" : 0;
@@ -10269,4 +10339,4 @@ $root.scan = (function() {
     return scan;
 })();
 
-module.exports = $root;
+export { $root as default };
