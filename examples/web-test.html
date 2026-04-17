@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ESP32 Provisioner Debugger</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #f0f2f5;
+      color: #1c1e21;
+    }
+
+    section {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #606770;
+    }
+
+    input,
+    select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    input:disabled,
+    select:disabled {
+      background: #f5f6f7;
+      cursor: not-allowed;
+      color: #bcc0c4;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background: #0084ff;
+      color: white;
+      font-weight: bold;
+    }
+
+    button.secondary {
+      background: #e4e6eb;
+      color: #050505;
+    }
+
+    #postConnectActions {
+      display: none;
+      border-top: 3px solid #0084ff;
+      padding-top: 20px;
+    }
+
+    #log {
+      background: #1c1e21;
+      color: #31d05e;
+      padding: 15px;
+      border-radius: 6px;
+      height: 250px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>ESP32 Provisioner</h2>
+
+  <section>
+    <div class="grid">
+      <div class="field">
+        <label>Device Name Prefix</label>
+        <input type="text" id="prefix" value="PROV_">
+      </div>
+      <div class="field">
+        <label>Service UUID</label>
+        <input type="text" id="uuid" value="021a9004-0382-4aea-bff4-6b3f1c5adfb4" placeholder="0000ffff-0000-1000-8000-00805f9b34fb">
+      </div>
+      <div class="field">
+        <label>Security Mode</label>
+        <select id="secMode">
+          <option value="0">Security 0 (None)</option>
+          <option value="1">Security 1 (PoP)</option>
+          <option value="2">Security 2 (SRP6a)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label id="labelPop">PoP / Password</label>
+        <input type="text" id="pop" placeholder="test">
+      </div>
+      <div class="field">
+        <label id="labelUser">Username (Sec 2 Only)</label>
+        <input type="text" id="username" value="wifiprov">
+      </div>
+      <div class="field">
+        <label>Action</label>
+        <button id="btnConnect">Initialize & Connect</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="postConnectActions">
+    <h3>Connected Device Controls</h3>
+    <div class="grid">
+      <div class="field">
+        <label>Endpoint</label>
+        <input type="text" id="epName" value="device-id">
+      </div>
+      <div class="field">
+        <label>Value (for Write)</label>
+        <input type="text" id="epValue" placeholder="New Value">
+      </div>
+      <div class="field" style="flex-direction: row; gap: 5px; align-items: flex-end;">
+        <button id="btnRead" class="secondary" style="flex: 1;">Read</button>
+        <button id="btnWrite" class="secondary" style="flex: 1;">Write</button>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+      <button id="btnScan" style="background: #28a745;">Scan WiFi</button>
+    </div>
+
+    <div id="scanResults" class="hidden" style="margin-top: 20px;">
+      <label>Found Networks</label>
+      <ul id="networkList" style="background: #f9f9f9; padding: 10px; border-radius: 4px; list-style: none;"></ul>
+    </div>
+  </section>
+
+  <div id="log">Console ready...</div>
+
+  <script type="module">
+    import { ESPProvisioner, Security0, Security1, Security2 } from '../dist/index.esm.js';
+
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+
+    let provisioner = null;
+    const log = (msg) => {
+      const div = document.createElement('div');
+      div.textContent = `> ${msg}`;
+      const logEl = document.getElementById('log');
+      logEl.appendChild(div);
+      logEl.scrollTop = logEl.scrollHeight;
+    };
+
+    const secModeSelect = document.getElementById('secMode');
+    const popInput = document.getElementById('pop');
+    const userInput = document.getElementById('username');
+
+    const updateSecurityUI = () => {
+      const mode = secModeSelect.value;
+      if (mode === "0") {
+        popInput.disabled = true;
+        userInput.disabled = true;
+        popInput.placeholder = "Not required";
+      } else if (mode === "1") {
+        popInput.disabled = false;
+        userInput.disabled = true;
+        popInput.placeholder = "PoP String";
+      } else if (mode === "2") {
+        popInput.disabled = false;
+        userInput.disabled = false;
+        popInput.placeholder = "Password";
+      }
+    };
+
+    secModeSelect.addEventListener('change', updateSecurityUI);
+    updateSecurityUI();
+
+    document.getElementById('btnConnect').addEventListener('click', async () => {
+      try {
+        const mode = secModeSelect.value;
+        const pop = popInput.value;
+        const user = userInput.value;
+        const prefix = document.getElementById('prefix').value;
+        const uuid = document.getElementById('uuid').value;
+
+        // 1. Determine Security Configuration
+        let security;
+        if (mode === "1") {
+          security = new Security1({ pop });
+        } else if (mode === "2") {
+          security = new Security2({ username: user, password: pop });
+        } else {
+          security = new Security0();
+        }
+
+        // 2. Initialize with UI values
+        provisioner = new ESPProvisioner({
+          deviceNamePrefix: prefix,
+          serviceUUID: uuid,
+          security: security
+        });
+
+        log(`Scanning for devices with prefix "${prefix}"...`);
+        await provisioner.connect();
+        log("Connected to Bluetooth device.");
+
+        log("Establishing Session...");
+        await provisioner.establishSession();
+        log("Session Established!");
+
+        document.getElementById('postConnectActions').style.display = 'block';
+      } catch (e) {
+        log(`Error: ${e.message}`);
+        console.error(e);
+      }
+    });
+
+    document.getElementById('btnScan').addEventListener('click', async () => {
+      log("Scanning WiFi...");
+      try {
+        const networks = await provisioner.scan();
+        const list = document.getElementById('networkList');
+        list.innerHTML = "";
+        networks.forEach(n => {
+          const li = document.createElement('li');
+          li.textContent = `${decoder.decode(n.ssid)} (${n.rssi}dBm)`;
+          list.appendChild(li);
+        });
+        document.getElementById('scanResults').classList.remove('hidden');
+        log(`Scan complete. Found ${networks.length} networks.`);
+      } catch (e) {
+        log(`Scan Error: ${e.message}`);
+      }
+    });
+
+    // Added logic for Read/Write buttons
+    const textEncoder = new TextEncoder();
+    const textDecoder = new TextDecoder();
+
+    document.getElementById('btnRead').addEventListener('click', async () => {
+      const ep = document.getElementById('epName').value;
+      try {
+        const val = await provisioner.readValueFromEndpoint(ep);
+        log(`Read [${ep}]: ${textDecoder.decode(val)}`);
+      } catch (e) { log(`Read Error: ${e.message}`); }
+    });
+
+    document.getElementById('btnWrite').addEventListener('click', async () => {
+      const ep = document.getElementById('epName').value;
+      const val = document.getElementById('epValue').value;
+      try {
+        await provisioner.writeValueToEndpoint(ep, textEncoder.encode(val));
+        log(`Successfully wrote to [${ep}]`);
+      } catch (e) { log(`Write Error: ${e.message}`); }
+    });
+  </script>
+</body>
+
+</html>
