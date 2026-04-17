@@ -356,7 +356,7 @@ export default class Security2 extends Security {
 
     // -- Encrypt / Decrypt (AES-256-GCM) -------------------------------------
 
-    async encrypt(data: Uint8Array): Promise<Uint8Array> {
+    async encrypt(data: Uint8Array<ArrayBuffer>): Promise<Uint8Array> {
         if (!this.sessionKey || !this.nonce) {
             throw new ProvisionerError("Secure session not established.");
         }
@@ -371,7 +371,7 @@ export default class Security2 extends Security {
         return new Uint8Array(cipherBuf);
     }
 
-    async decrypt(data: Uint8Array): Promise<Uint8Array> {
+    async decrypt(data: Uint8Array<ArrayBuffer>): Promise<Uint8Array> {
         if (!this.sessionKey || !this.nonce) {
             throw new ProvisionerError("Secure session not established.");
         }
