@@ -6,8 +6,10 @@
 
 ## Features
 
-- WiFi provisioning supporting Security0 and Security1.
-- Automatic discovery of provisioning and custom endpoints.
+- All provisioning schemes: Security0, Security1, Security2
+- Networks scanning
+- Endpoints discovery
+- Endpoints read/write operations
 
 ## Installation
 
